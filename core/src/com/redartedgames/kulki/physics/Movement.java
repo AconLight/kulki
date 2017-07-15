@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Movement {
 	private Vector2 position, velocity, acceleration;
-	
+	 
 	public Movement() {
 		position = new Vector2(0, 0);
 		velocity = new Vector2(0, 0);

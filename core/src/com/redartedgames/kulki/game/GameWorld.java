@@ -11,8 +11,11 @@ public class GameWorld extends World{
 		atomsHandler = new AtomsHandler();
 	}
 	
+	@Override
 	public void update(float delta) {
+		atomsHandler.colidate();
 		atomsHandler.update(delta);
+
 	}
 
 	public AtomsHandler getAtomsHandler() {

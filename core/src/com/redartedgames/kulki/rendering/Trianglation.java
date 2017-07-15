@@ -29,6 +29,7 @@ public class Trianglation {
 	public void calculate() {
 		ArrayList<AtomTriangle> atomTriangles = new ArrayList<AtomTriangle>();
 		//TODO
+		if (atoms.size() >= 3) // tego ifa raczej zostaw, ¿eby null pointerów nie by³o
 		atomTriangles.add(new AtomTriangle(atoms.get(0), atoms.get(1), atoms.get(2))); // tak napisa³em, ¿eby zobaczyæ, czy dzia³a wszystko
 		/*
 				Jêdrzeju, potrzebujê algorytmu, który stworzy z punktów trójk¹ty

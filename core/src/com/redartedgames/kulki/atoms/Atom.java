@@ -32,6 +32,7 @@ public class Atom extends GameObject{
 		public float R,G,B;
 		Random gen;
 		public int trianglesI = 0;
+		public float creationA, creationB;
 		
 		public Atom(float x, float y, int id) {
 			gen = new Random();
@@ -71,6 +72,8 @@ public class Atom extends GameObject{
 		
 		@Override
 		public void update (float delta) {
+			delta /= 4;
+			if (delta > 0.01f) delta = 0.01f;
 			trianglesI = 0;
 			energyV = -energy/10;
 			energy += energyV*delta;

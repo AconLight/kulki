@@ -28,9 +28,15 @@ public class MyScreen {
 	public void render() {
 		screenRenderer.render();
 	}
+	
+	public void update(float delta) {
+		world.update(delta);
+	}
 
 	public OrthographicCamera getCamera() {
 		return camera;
 	}
+
+
 	
 }
