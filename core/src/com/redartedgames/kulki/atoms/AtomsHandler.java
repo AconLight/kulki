@@ -11,7 +11,7 @@ public class AtomsHandler {
 		atoms = new ArrayList<Atom>();
 		Random g = new Random();
 		for (int i = 0; i < 100; i++) {
-			atoms.add(new Atom( 50 + i%10*70 + g.nextInt(60) - 30, 70*(i/10) + 50 + g.nextInt(60) - 30, i));
+			atoms.add(new Atom( 50 + i%10*70 + g.nextInt(60) - 30, 70*(i/10) + 50 + g.nextInt(60) - 30, this,  i));
 		}
 	}
 	
@@ -31,6 +31,10 @@ public class AtomsHandler {
 				}
 			}
 		}
+	}
+	
+	public void addAtom(float x, float y, double k, double a, double b, double h) {
+		atoms.add(new Atom(x, y, k, a, b, h, atoms.size()));
 	}
 	
 	public ArrayList<Atom> getAtoms() {
