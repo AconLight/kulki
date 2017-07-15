@@ -10,7 +10,7 @@ public class GameObject implements Loggable {
 		
 	}
 	
-	public void update() {
+	public void update(float delta) {
 		
 	}
 	

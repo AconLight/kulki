@@ -22,7 +22,7 @@ public class Atom extends GameObject{
 	
 	
 	//sin(100*x^2/(x^2+25))/(x^2+25)
-		public Movement movement;
+		public Movement movement; 
 		private Movement myMov;
 		public Circle circle1, circle2;
 		public double k,a,b,h;
@@ -69,7 +69,7 @@ public class Atom extends GameObject{
 			energyV = 0;
 		}
 		
-		
+		@Override
 		public void update (float delta) {
 			trianglesI = 0;
 			energyV = -energy/10;
@@ -119,6 +119,7 @@ public class Atom extends GameObject{
 			double dx = movement.getPosition().x - atom.movement.getPosition().x;
 			double dy = movement.getPosition().y - atom.movement.getPosition().y;
 			double dr = dx*dx + dy*dy + 0.1; // w celu unikniêcia NaN
+			/*
 			//////////////////////////////////
 			if (dr < 100000) {
 				//Gdx.app.log("jest con", "");
@@ -144,6 +145,7 @@ public class Atom extends GameObject{
 				}
 			}
 			/////////////////////////////////
+			*/
 			double k2 = (k+atom.k)/2;
 			double a2 = (a+atom.a)/2;
 			double b2 = (b+atom.b)/2;

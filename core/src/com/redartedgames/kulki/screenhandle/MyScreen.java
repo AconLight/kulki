@@ -8,9 +8,11 @@ public class MyScreen {
 	
 	private Viewport viewport;
 	
-	private OrthographicCamera camera;
+	protected OrthographicCamera camera;
 	
-	private ScreenRenderer screenRenderer;
+	protected ScreenRenderer screenRenderer;
+	
+	protected World world;
 	
 	public MyScreen(int width, int height) {
 		camera = new OrthographicCamera();
@@ -18,16 +20,13 @@ public class MyScreen {
 		viewport = new ScreenViewport();
 		viewport.setWorldSize(width, height);
 		viewport.setCamera(camera);
-		viewport.setScreenSize(200, 200);
+		viewport.setScreenSize(width, height);
 		screenRenderer = new ScreenRenderer();
+		world = new World();
 	}
 	
 	public void render() {
 		screenRenderer.render();
-	}
-	
-	public void setRenderer(ScreenRenderer renderer) {
-		screenRenderer = renderer;
 	}
 
 	public OrthographicCamera getCamera() {

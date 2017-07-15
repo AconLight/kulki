@@ -6,7 +6,10 @@ import java.util.ListIterator;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.redartedgames.kulki.game.GameRenderer;
+import com.redartedgames.kulki.game.GameScreen;
+import com.redartedgames.kulki.game.GameWorld;
 import com.redartedgames.kulki.screenhandle.MyScreen;
+import com.redartedgames.kulki.screenhandle.World;
 
 public class EditorGame extends Game {
 	
@@ -16,19 +19,17 @@ public class EditorGame extends Game {
 	@Override
 	public void create() {
 		myScreens = new ArrayList<MyScreen>();
-		MyScreen ms = new MyScreen(200, 200);
-		ms.setRenderer(new GameRenderer(ms.getCamera()));
+		MyScreen ms = new GameScreen(640*2, 360*2);
 		myScreens.add(ms);
 	}
 	
 	@Override
 	public void render() {
-		ListIterator itr = myScreens.listIterator();
+		ListIterator<MyScreen> itr = myScreens.listIterator();
 		
 		while (itr.hasNext()) {
-			MyScreen e = (MyScreen) itr.next();
+			MyScreen e = itr.next();
 			e.render();
-			Gdx.app.log("asd", "asd");
 		}
 	}
 	
