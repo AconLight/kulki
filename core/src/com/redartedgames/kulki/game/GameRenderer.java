@@ -72,7 +72,7 @@ public class GameRenderer extends ScreenRenderer {
 		
 		for (int i = 0; i < atomsHandler.getAtoms().size(); i++) {
 			shapeRenderer.circle(atomsHandler.getAtoms().get(i).movement.getPosition().x, 
-					atomsHandler.getAtoms().get(i).movement.getPosition().y, 10);
+					atomsHandler.getAtoms().get(i).movement.getPosition().y, 5);
 		}
 		
 		shapeRenderer.end();

@@ -3,7 +3,7 @@ package com.redartedgames.kulki.physics;
 import com.badlogic.gdx.math.Vector2;
 
 public class Movement {
-	private Vector2 position, velocity, acceleration;
+	protected Vector2 position, velocity, acceleration;
 	 
 	public Movement() {
 		position = new Vector2(0, 0);
@@ -32,6 +32,15 @@ public class Movement {
 		velocity.y += mov.velocity.y;
 		acceleration.x += mov.acceleration.x;
 		acceleration.y += mov.acceleration.y;
+	}
+	
+	public void scl(float k) {
+		position.x *= k;
+		position.y *= k;
+		velocity.x *= k;
+		velocity.y *= k;
+		acceleration.x *= k;
+		acceleration.y *= k;
 	}
 
 	public Vector2 getPosition() {
@@ -71,6 +80,12 @@ public class Movement {
 	public void addAcceleration(float x, float y) {
 		acceleration.x+=x;
 		acceleration.y+=y;
+	}
+	
+	public void set(Movement mov) {
+		setPosition(mov.getPosition());
+		setVelocity(mov.getVelocity());
+		setAcceleration(mov.getAcceleration());
 	}
 	
 	

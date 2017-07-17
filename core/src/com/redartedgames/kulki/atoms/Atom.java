@@ -3,10 +3,13 @@ package com.redartedgames.kulki.atoms;
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Vector2;
 import com.redartedgames.kulki.objectsystem.GameObject;
+import com.redartedgames.kulki.physics.LimitedMovement;
 import com.redartedgames.kulki.physics.Movement;
+import com.redartedgames.kulki.physics.MovementList;
 
 public class Atom extends GameObject{
 	
@@ -22,8 +25,9 @@ public class Atom extends GameObject{
 	
 	
 	//sin(100*x^2/(x^2+25))/(x^2+25)
-		public Movement movement; 
+		public LimitedMovement movement; 
 		private Movement myMov;
+		private MovementList myMoves;
 		public Circle circle1, circle2;
 		public double k,a,b,h;
 		public double energy, energyV;
@@ -34,38 +38,45 @@ public class Atom extends GameObject{
 		public int trianglesI = 0;
 		public float creationA, creationB, creationEnergyDrag;
 		private AtomsHandler atomsHandler;
+		private float time;
 		
 		public Atom(float x, float y, AtomsHandler atomsHandler, int id) {
+			time = 0;
+			this.atomsHandler = atomsHandler;
 			creationA = 0.5f;
 			creationB = 0.7f;
-			creationEnergyDrag = 0;
+			creationEnergyDrag = 0.3f;
 			gen = new Random();
 			R = 0.6f + ((float)gen.nextInt(30))/100.0f;
 			G = 0.3f + ((float)gen.nextInt(30))/100.0f;
 			B = 0.1f + ((float)gen.nextInt(30))/100.0f;
 			atoms = new ArrayList<Atom>();
-			movement = new Movement(new Vector2(x, y), new Vector2(0, 0), new Vector2(0, -Consts.physicsG));
+			movement = new LimitedMovement(new Vector2(x, y), new Vector2(0, 0), new Vector2(0, -Consts.physicsG));
+			myMoves = new MovementList(1, 1);
 			myMov = new Movement(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0));
 			circle1 = new Circle(x, y, 60);
 			circle2 = new Circle(x, y, 60);
 			k = 600; //zmienna = x/k odleg³oœæ przejœcia pomiêdzy stanami
 			a = 55; // przesuniêcie funkcji - kszta³t
 			b = 1; // wyciszanie funkcji, funkcja wzrasta przy odleg³oœci bliskiej zero gdy b < 1
-			h = 150; //mno¿nik wartoœci
+			h = 70; //mno¿nik wartoœci
 			energy = 0;
 			energyV = 0;
 			this.id = id;
 		}
-		public Atom(float x, float y, double k, double a, double b, double h, int id) {
+		public Atom(float x, float y, float vx, float vy, double k, double a, double b, double h, AtomsHandler atomsHandler, int id) {
+			time = 0;
+			this.atomsHandler = atomsHandler;
 			creationA = 0.5f;
 			creationB = 0.7f;
-			creationEnergyDrag = 0;
+			creationEnergyDrag = 0.3f;
 			gen = new Random();
 			R = 0.6f + ((float)gen.nextInt(30))/100.0f;
 			G = 0.3f + ((float)gen.nextInt(30))/100.0f;
 			B = 0.1f + ((float)gen.nextInt(30))/100.0f;
 			atoms = new ArrayList<Atom>();
-			movement = new Movement(new Vector2(x, y), new Vector2(0, 0), new Vector2(0, -Consts.physicsG));
+			movement = new LimitedMovement(new Vector2(x, y), new Vector2(vx, vy), new Vector2(0, -Consts.physicsG));
+			myMoves = new MovementList(1, 1);
 			myMov = new Movement(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0));
 			circle1 = new Circle(x, y, 60);
 			circle2 = new Circle(x, y, 60);
@@ -79,64 +90,84 @@ public class Atom extends GameObject{
 		
 		public void checkCreation() {
 			if ((creationA + creationB)*(creationA + creationB)*creationEnergyDrag > 1) {
+
+				atomsHandler.addAtom(movement.getPosition().x + creationA*5, movement.getPosition().y + creationB*5,
+						movement.getVelocity().x + creationA*500, movement.getVelocity().y+creationB*500, k, a, b, h);
 				creationA = 0;
 				creationB = 0;
-				atomsHandler.addAtom(creationA*10, creationB*10, k, a, b, h);
 			}
 		}
 		
 		@Override
 		public void update (float delta) {
+			time += delta/(5 + time*5);
+			//time += time/10;
+			if (time > 1)
+			time = 1;
+			//delta *= time;
+			//creationA += delta/10;
+			creationB += delta/10;
+			Gdx.app.log("Atom update", "" + (creationA + creationB)*(creationA + creationB)*creationEnergyDrag);
+			checkCreation();
 			delta /= 4;
 			if (delta > 0.01f) delta = 0.01f;
 			trianglesI = 0;
 			energyV = -energy/10;
 			energy += energyV*delta;
 			
-			myMov.update(delta);
-			myMov.setAcceleration(0, 0);
+					
+					
+			//myMov.setPosition((float)Math.sqrt(myMov.getPosition().x), (float)Math.sqrt(myMov.getPosition().y)); 
+
+
+			
+			
+			myMoves.update(delta);
+			myMoves.setFirstPosition((float)Math.atan(myMoves.getFirstPosition().x), 
+					(float)Math.atan(myMoves.getFirstPosition().y));
+			myMoves.setFirstAcceleration(0, 0);
 			//myMov.setVelocity((myMov.getVelocity().x + energy),
 					//(myMov.getVelocity().y + energy));
-			float vr = myMov.getVelocity().x*myMov.getVelocity().x + myMov.getVelocity().y*myMov.getVelocity().y;
+			/*float vr = myMov.getVelocity().x*myMov.getVelocity().x + myMov.getVelocity().y*myMov.getVelocity().y;
 			vr = (float) Math.sqrt(Math.sqrt(vr));
 			myMov.getVelocity().set(myMov.getVelocity().x/vr, myMov.getVelocity().y/vr);
-			myMov.getVelocity().set(myMov.getVelocity().x*(1 + (float) energy/100),
-					myMov.getVelocity().y*(1 + (float) energy/100));
-			if (energy > 400) {
-				k += energy/1000 * delta;
-				a += energy/1000 * delta;
-				b += energy/500 * delta;
-				h -= energy/1000 * delta;
-			}
-			else if (energy > 300) {
-				
-			}
-			movement.add(myMov);
+			//myMov.getVelocity().set(myMov.getVelocity().x*(1 + (float) energy/100),
+					//myMov.getVelocity().y*(1 + (float) energy/100));
+					 * 
+					 * */
+			
+			movement.add(myMoves.getFirstMovement());
+			
+			
+	
+			
+			
 			movement.update(delta);
-			myMov.setVelocity(0, 0);
-			myMov.setPosition(0, 0);
+			myMoves.setFirstVelocity(0, 0);
+			myMoves.setFirstPosition(0, 0);
 			
 			//odbijanie
 			if(movement.getPosition().y<50) {
-				movement.getVelocity().y*=-0.94f;
+				movement.getVelocity().y*=-0.7f;
 				movement.getPosition().y = 50;
 			}
 			if(movement.getPosition().x<50) {
-				movement.getVelocity().x*=-0.94f;
+				movement.getVelocity().x*=-0.7f;
 				movement.getPosition().x = 50;
 			}
 			if(movement.getPosition().x>2000) {
-				movement.getVelocity().x*=-0.94f;
+				movement.getVelocity().x*=-0.7f;
 				movement.getPosition().x = 2000;
 			}
-			movement.getVelocity().x *= 0.999f;
-			movement.getVelocity().y *= 0.999f;
+			movement.getVelocity().x *= 0.9+time/10f;
+			movement.getVelocity().y *= 0.9+time/10f;
 		}
 		
 		public void collidate(Atom atom) {
 			double dx = movement.getPosition().x - atom.movement.getPosition().x;
 			double dy = movement.getPosition().y - atom.movement.getPosition().y;
 			double dr = dx*dx + dy*dy + 0.1; // w celu unikniêcia NaN
+			double time2 = time*atom.time + 0.01;
 			/*
 			//////////////////////////////////
 			if (dr < 100000) {
@@ -168,8 +199,8 @@ public class Atom extends GameObject{
 			double a2 = (a+atom.a)/2;
 			double b2 = (b+atom.b)/2;
 			double h2 = (h+atom.h)/2;
-			double f = h2*(Math.sin(((dr/k2+a2)/(dr/k2+1)))/(dr/k2+b2));// + 150/(dr+10));
-			myMov.addAcceleration((float)((dx/dr)*f*f*f), (float)((dy/dr)*f*f*f));
+			double f = h2*(Math.sin(((dr/k2+a2)/(dr/k2+1)))/(dr/k2+b2))*time2;// + 150/(dr+10));
+			myMoves.addFirstAcceleration((float)((dx/dr)*f*f*f), (float)((dy/dr)*f*f*f));
 			
 			
 		}

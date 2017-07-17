@@ -6,12 +6,14 @@ import java.util.Random;
 
 public class AtomsHandler {
 	private ArrayList<Atom> atoms;
+	private ArrayList<Atom> atomsToAdd;
 
 	public AtomsHandler() {
 		atoms = new ArrayList<Atom>();
+		atomsToAdd = new ArrayList<Atom>();
 		Random g = new Random();
-		for (int i = 0; i < 100; i++) {
-			atoms.add(new Atom( 50 + i%10*70 + g.nextInt(60) - 30, 70*(i/10) + 50 + g.nextInt(60) - 30, this,  i));
+		for (int i = 0; i < 1; i++) {
+			atoms.add(new Atom( 150 + i%10*70 + g.nextInt(60) - 30, 70*(i/10) + 3, this,  i));
 		}
 	}
 	
@@ -20,6 +22,10 @@ public class AtomsHandler {
 			while(itr.hasNext()) {
 				Atom e = itr.next();
 				e.update(delta);
+			}
+			if (atomsToAdd.size() > 0) {
+				atoms.addAll(atomsToAdd);
+				atomsToAdd = new ArrayList<Atom>();
 			}
 	}
 	
@@ -33,8 +39,8 @@ public class AtomsHandler {
 		}
 	}
 	
-	public void addAtom(float x, float y, double k, double a, double b, double h) {
-		atoms.add(new Atom(x, y, k, a, b, h, atoms.size()));
+	public void addAtom(float x, float y, float vx, float vy, double k, double a, double b, double h) {
+		atomsToAdd.add(new Atom(x, y, vx, vy, k, a, b, h, this, atoms.size()));
 	}
 	
 	public ArrayList<Atom> getAtoms() {
