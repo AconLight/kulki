@@ -37,12 +37,10 @@ public class Atom extends GameObject{
 		Random gen;
 		public int trianglesI = 0;
 		public float creationA, creationB, creationEnergyDrag;
-		private AtomsHandler atomsHandler;
 		private float time;
 		
 		public Atom(float x, float y, AtomsHandler atomsHandler, int id) {
 			time = 0;
-			this.atomsHandler = atomsHandler;
 			creationA = 0.5f;
 			creationB = 0.7f;
 			creationEnergyDrag = 0.3f;
@@ -66,7 +64,6 @@ public class Atom extends GameObject{
 		}
 		public Atom(float x, float y, float vx, float vy, double k, double a, double b, double h, AtomsHandler atomsHandler, int id) {
 			time = 0;
-			this.atomsHandler = atomsHandler;
 			creationA = 0.5f;
 			creationB = 0.7f;
 			creationEnergyDrag = 0.3f;
@@ -88,14 +85,18 @@ public class Atom extends GameObject{
 			energyV = 0;
 		}
 		
-		public void checkCreation() {
+		public boolean checkCreation() {
 			if ((creationA + creationB)*(creationA + creationB)*creationEnergyDrag > 1) {
-
-				atomsHandler.addAtom(movement.getPosition().x + creationA*5, movement.getPosition().y + creationB*5,
-						movement.getVelocity().x + creationA*500, movement.getVelocity().y+creationB*500, k, a, b, h);
-				creationA = 0;
-				creationB = 0;
+				return true;
 			}
+			return false;
+		}
+		
+		public void eject(AtomsHandler atomsHandler) {
+			atomsHandler.addAtom(movement.getPosition().x + creationA*5, movement.getPosition().y + creationB*5,
+					movement.getVelocity().x + creationA*500, movement.getVelocity().y+creationB*500, k, a, b, h);
+			creationA = 0;
+			creationB = 0;
 		}
 		
 		@Override

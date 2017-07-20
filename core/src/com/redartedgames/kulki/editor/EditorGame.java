@@ -1,4 +1,4 @@
-package com.redaertedgames.kulki.editor;
+package com.redartedgames.kulki.editor;
 
 import java.util.ArrayList;
 import java.util.ListIterator;

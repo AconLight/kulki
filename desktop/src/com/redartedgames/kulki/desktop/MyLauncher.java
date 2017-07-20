@@ -2,8 +2,8 @@ package com.redartedgames.kulki.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.redaertedgames.kulki.editor.EditorGame;
-import com.redaertedgames.kulki.editor.TriangulationTest;
+import com.redartedgames.kulki.editor.EditorGame;
+import com.redartedgames.kulki.editor.TriangulationTest;
 
 public class MyLauncher {
 	public static void main (String[] arg) {

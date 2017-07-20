@@ -22,6 +22,9 @@ public class AtomsHandler {
 			while(itr.hasNext()) {
 				Atom e = itr.next();
 				e.update(delta);
+				if (e.checkCreation()) {
+					e.eject(this);
+				}
 			}
 			if (atomsToAdd.size() > 0) {
 				atoms.addAll(atomsToAdd);
