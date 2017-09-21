@@ -14,6 +14,10 @@ public class MyScreen {
 	
 	protected World world;
 	
+	public World getWorld() {
+		return world;
+	}
+
 	public MyScreen(int width, int height) {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, width, height);

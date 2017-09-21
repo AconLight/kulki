@@ -12,5 +12,11 @@ public class GameScreen extends MyScreen{
 		world = new GameWorld();
 		screenRenderer = new GameRenderer(camera, (GameWorld)world);
 	}
+	
+	public GameScreen(int width, int height, World world) {
+		super(width, height);
+		this.world = world;
+		screenRenderer = new GameRenderer(camera, (GameWorld)world);
+	}
 
 }

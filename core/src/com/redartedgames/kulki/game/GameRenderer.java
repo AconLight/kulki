@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.redartedgames.kulki.atoms.AtomsHandler;
+import com.redartedgames.kulki.atoms.Consts;
 import com.redartedgames.kulki.rendering.Trianglation;
 import com.redartedgames.kulki.screenhandle.ScreenRenderer;
 
@@ -44,32 +45,52 @@ public class GameRenderer extends ScreenRenderer {
 				*/
 		
 		
-		//trianglation.calculate();
-		for (int i = 0; i < trianglation.getAtomTriangles().size(); i++) {
-			shapeRenderer.triangle(trianglation.getAtomTriangles().get(i).getAtoms().get(0).movement.getPosition().x,
-					trianglation.getAtomTriangles().get(i).getAtoms().get(0).movement.getPosition().y,
+		trianglation.calculate();
+		for (int i = 0; i < trianglation.delaunayTriangulator.getTriangles().size(); i++) {
+			shapeRenderer.triangle((float)trianglation.delaunayTriangulator.getTriangles().get(i).a.x,
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).a.y,
 					
-					trianglation.getAtomTriangles().get(i).getAtoms().get(1).movement.getPosition().x,
-					trianglation.getAtomTriangles().get(i).getAtoms().get(1).movement.getPosition().y,
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).b.x,
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).b.y,
 					
-					trianglation.getAtomTriangles().get(i).getAtoms().get(2).movement.getPosition().x,
-					trianglation.getAtomTriangles().get(i).getAtoms().get(2).movement.getPosition().y,
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).c.x,
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).c.y,
 					
-					new Color(trianglation.getAtomTriangles().get(i).getAtoms().get(0).R,
-							trianglation.getAtomTriangles().get(i).getAtoms().get(0).G,
-							trianglation.getAtomTriangles().get(i).getAtoms().get(0).B,1), 
-
-
-					new Color(trianglation.getAtomTriangles().get(i).getAtoms().get(1).R,
-							trianglation.getAtomTriangles().get(i).getAtoms().get(1).G,
-							trianglation.getAtomTriangles().get(i).getAtoms().get(1).B,1), 
+					usrednianieKolorow1(trianglation.delaunayTriangulator.getTriangles().get(i).a.color, 
+							trianglation.delaunayTriangulator.getTriangles().get(i).b.color, 
+							trianglation.delaunayTriangulator.getTriangles().get(i).c.color, Consts.zachowanie),
 					
-					new Color(trianglation.getAtomTriangles().get(i).getAtoms().get(2).R,
-							trianglation.getAtomTriangles().get(i).getAtoms().get(2).G,
-							trianglation.getAtomTriangles().get(i).getAtoms().get(2).B,1));
+					usrednianieKolorow2(trianglation.delaunayTriangulator.getTriangles().get(i).a.color, 
+							trianglation.delaunayTriangulator.getTriangles().get(i).b.color, 
+							trianglation.delaunayTriangulator.getTriangles().get(i).c.color, Consts.zachowanie),
+					
+					usrednianieKolorow3(trianglation.delaunayTriangulator.getTriangles().get(i).a.color, 
+							trianglation.delaunayTriangulator.getTriangles().get(i).b.color, 
+							trianglation.delaunayTriangulator.getTriangles().get(i).c.color, Consts.zachowanie));
 			
 		}
 		
+		shapeRenderer.setColor(0f/255, 0f/255, 0f/255, 1);
+		
+		for (int i = 0; i < trianglation.delaunayTriangulator.getTriangles().size(); i++) {
+			shapeRenderer.rectLine((float)trianglation.delaunayTriangulator.getTriangles().get(i).a.x, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).a.y, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).b.x, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).b.y, 1);
+			
+			shapeRenderer.rectLine((float)trianglation.delaunayTriangulator.getTriangles().get(i).a.x, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).a.y, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).c.x, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).c.y, 1);
+			
+			shapeRenderer.rectLine((float)trianglation.delaunayTriangulator.getTriangles().get(i).c.x, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).c.y, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).b.x, 
+					(float)trianglation.delaunayTriangulator.getTriangles().get(i).b.y, 1);
+		
+		}
+		
+		shapeRenderer.setColor(0f/255, 0f/255, 153f/255, 1);
 		for (int i = 0; i < atomsHandler.getAtoms().size(); i++) {
 			shapeRenderer.circle(atomsHandler.getAtoms().get(i).movement.getPosition().x, 
 					atomsHandler.getAtoms().get(i).movement.getPosition().y, 5);
@@ -78,4 +99,14 @@ public class GameRenderer extends ScreenRenderer {
 		shapeRenderer.end();
 		
 	}
+	
+	Color usrednianieKolorow1(Color c1, Color c2, Color c3, float zachowanie) {
+		return new Color((c1.r + zachowanie*c2.r + zachowanie*c3.r)/(2*zachowanie+1), (c1.g + zachowanie*c2.g + zachowanie*c3.g)/(zachowanie*2+1), (c1.b + zachowanie*c2.b + zachowanie*c3.b)/(zachowanie*2+1), 1);
+	}
+	Color usrednianieKolorow2(Color c1, Color c2, Color c3, float zachowanie) {
+		return new Color((zachowanie*c1.r + c2.r + zachowanie*c3.r)/(zachowanie*2+1), (zachowanie*c1.g + c2.g + zachowanie*c3.g)/(zachowanie*2+1), (zachowanie*c1.b + c2.b + zachowanie*c3.b)/(zachowanie*2+1), 1);
+	}
+	Color usrednianieKolorow3(Color c1, Color c2, Color c3, float zachowanie) {
+		return new Color((zachowanie*c1.r + zachowanie*c2.r + c3.r)/(zachowanie*2+1), (zachowanie*c1.g + zachowanie*c2.g + c3.g)/(zachowanie*2+1), (zachowanie*c1.b + zachowanie*c2.b + c3.b)/(zachowanie*2+1), 1);
+}
 }

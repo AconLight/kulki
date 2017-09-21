@@ -12,8 +12,8 @@ public class AtomsHandler {
 		atoms = new ArrayList<Atom>();
 		atomsToAdd = new ArrayList<Atom>();
 		Random g = new Random();
-		for (int i = 0; i < 1; i++) {
-			atoms.add(new Atom( 150 + i%10*70 + g.nextInt(60) - 30, 70*(i/10) + 3, this,  i));
+		for (int i = 0; i < 93; i++) {
+			atoms.add(new Atom( 150 + i%10*60 + g.nextInt(60) - 30, 30*(i/10) + 3+ g.nextInt(10), this,  i));
 		}
 	}
 	
@@ -21,6 +21,7 @@ public class AtomsHandler {
 			ListIterator<Atom> itr = atoms.listIterator();
 			while(itr.hasNext()) {
 				Atom e = itr.next();
+				//if (e.id != 95)
 				e.update(delta);
 				if (e.checkCreation()) {
 					e.eject(this);

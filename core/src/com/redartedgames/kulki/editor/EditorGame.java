@@ -6,6 +6,7 @@ import java.util.ListIterator;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.redartedgames.kulki.game.GameInputHandler;
 import com.redartedgames.kulki.game.GameScreen;
 import com.redartedgames.kulki.screenhandle.MyScreen;
 
@@ -18,7 +19,8 @@ ArrayList<MyScreen> myScreens;
 		myScreens = new ArrayList<MyScreen>();
 		MyScreen ms = new GameScreen(640*2, 360*2);
 		myScreens.add(ms);
-		Gdx.gl.glClearColor( 1, 0, 0, 1 );
+		//Gdx.gl.glClearColor( 153f/255, 76f/255, 0f/255, 1 );
+		Gdx.input.setInputProcessor(new GameInputHandler(myScreens.get(0).getWorld()));
 	}
 	
 	@Override

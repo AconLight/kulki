@@ -31,24 +31,30 @@ public class Atom extends GameObject{
 		public Circle circle1, circle2;
 		public double k,a,b,h;
 		public double energy, energyV;
-		public ArrayList <Atom> atoms;
+		public ArrayList <Atom> atoms, atoms2;
 		public int id;
 		public float R,G,B;
 		Random gen;
 		public int trianglesI = 0;
 		public float creationA, creationB, creationEnergyDrag;
 		private float time;
+		public boolean toRender;
 		
 		public Atom(float x, float y, AtomsHandler atomsHandler, int id) {
+			if (id == -1) {
+				toRender = false;
+			}
+			else toRender = true;
 			time = 0;
 			creationA = 0.5f;
 			creationB = 0.7f;
 			creationEnergyDrag = 0.3f;
 			gen = new Random();
-			R = 0.6f + ((float)gen.nextInt(30))/100.0f;
-			G = 0.3f + ((float)gen.nextInt(30))/100.0f;
-			B = 0.1f + ((float)gen.nextInt(30))/100.0f;
+			R = 0.3f + ((float)gen.nextInt(600))/1000.0f;
+			G = 0.3f + ((float)gen.nextInt(600))/1000.0f;
+			B = 0.3f + ((float)gen.nextInt(600))/1000.0f;
 			atoms = new ArrayList<Atom>();
+			atoms2 = new ArrayList<Atom>();
 			movement = new LimitedMovement(new Vector2(x, y), new Vector2(0, 0), new Vector2(0, -Consts.physicsG));
 			myMoves = new MovementList(1, 1);
 			myMov = new Movement(new Vector2(0, 0), new Vector2(0, 0), new Vector2(0, 0));
@@ -57,7 +63,7 @@ public class Atom extends GameObject{
 			k = 600; //zmienna = x/k odleg³oœæ przejœcia pomiêdzy stanami
 			a = 55; // przesuniêcie funkcji - kszta³t
 			b = 1; // wyciszanie funkcji, funkcja wzrasta przy odleg³oœci bliskiej zero gdy b < 1
-			h = 70; //mno¿nik wartoœci
+			h = 60; //mno¿nik wartoœci
 			energy = 0;
 			energyV = 0;
 			this.id = id;
@@ -87,6 +93,7 @@ public class Atom extends GameObject{
 		
 		public boolean checkCreation() {
 			if ((creationA + creationB)*(creationA + creationB)*creationEnergyDrag > 1) {
+				
 				return true;
 			}
 			return false;
@@ -97,6 +104,7 @@ public class Atom extends GameObject{
 					movement.getVelocity().x + creationA*500, movement.getVelocity().y+creationB*500, k, a, b, h);
 			creationA = 0;
 			creationB = 0;
+			creationEnergyDrag /= 20;
 		}
 		
 		@Override
@@ -107,14 +115,14 @@ public class Atom extends GameObject{
 			time = 1;
 			//delta *= time;
 			//creationA += delta/10;
-			creationB += delta/10;
-			Gdx.app.log("Atom update", "" + (creationA + creationB)*(creationA + creationB)*creationEnergyDrag);
+			//creationB += delta/20;
+			//Gdx.app.log("Atom update", "" + (creationA + creationB)*(creationA + creationB)*creationEnergyDrag);
 			checkCreation();
 			delta /= 4;
 			if (delta > 0.01f) delta = 0.01f;
 			trianglesI = 0;
 			energyV = -energy/10;
-			energy += energyV*delta;
+			//energy += energyV*delta;
 			
 					
 					
@@ -148,6 +156,7 @@ public class Atom extends GameObject{
 			myMoves.setFirstPosition(0, 0);
 			
 			//odbijanie
+			/*
 			if(movement.getPosition().y<50) {
 				movement.getVelocity().y*=-0.7f;
 				movement.getPosition().y = 50;
@@ -160,6 +169,8 @@ public class Atom extends GameObject{
 				movement.getVelocity().x*=-0.7f;
 				movement.getPosition().x = 2000;
 			}
+			*/
+			//tarcie
 			movement.getVelocity().x *= 0.9+time/10f;
 			movement.getVelocity().y *= 0.9+time/10f;
 		}
@@ -200,7 +211,7 @@ public class Atom extends GameObject{
 			double a2 = (a+atom.a)/2;
 			double b2 = (b+atom.b)/2;
 			double h2 = (h+atom.h)/2;
-			double f = h2*(Math.sin(((dr/k2+a2)/(dr/k2+1)))/(dr/k2+b2))*time2;// + 150/(dr+10));
+			double f = h2*(Math.sin(((dr/k2+a2)/(dr/k2+1)))/(dr/k2+b2))*time2 - 30/(dr*dr/60+10);
 			myMoves.addFirstAcceleration((float)((dx/dr)*f*f*f), (float)((dy/dr)*f*f*f));
 			
 			
