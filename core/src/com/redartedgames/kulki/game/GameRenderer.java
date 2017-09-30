@@ -6,22 +6,26 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.redartedgames.kulki.atoms.AtomsHandler;
 import com.redartedgames.kulki.atoms.Consts;
-import com.redartedgames.kulki.rendering.Trianglation;
+//import com.redartedgames.kulki.rendering.Trianglation;
 import com.redartedgames.kulki.screenhandle.ScreenRenderer;
+
 
 public class GameRenderer extends ScreenRenderer {
 	
 	private ShapeRenderer shapeRenderer;
 	private OrthographicCamera camera;
-	private Trianglation trianglation;
+	//private Trianglation trianglation;
 	private AtomsHandler atomsHandler;
 	
 	public GameRenderer(OrthographicCamera camera, GameWorld gameWorld) {
 		this.camera = camera;
 		shapeRenderer = new ShapeRenderer();
 		shapeRenderer.setProjectionMatrix(camera.combined);
+		System.out.print("dupa");
 		this.atomsHandler = gameWorld.getAtomsHandler();
-		trianglation = new Trianglation(atomsHandler.getAtoms());
+		
+		//trianglation = new Trianglation(atomsHandler.getAtoms());
+		
 	}
 	
 	@Override
@@ -44,7 +48,7 @@ public class GameRenderer extends ScreenRenderer {
 				new Color(0,0.2f,0.7f,1));
 				*/
 		
-		
+		/*
 		trianglation.calculate();
 		for (int i = 0; i < trianglation.delaunayTriangulator.getTriangles().size(); i++) {
 			shapeRenderer.triangle((float)trianglation.delaunayTriangulator.getTriangles().get(i).a.x,
@@ -89,7 +93,7 @@ public class GameRenderer extends ScreenRenderer {
 					(float)trianglation.delaunayTriangulator.getTriangles().get(i).b.y, 1);
 		
 		}
-		
+		*/
 		shapeRenderer.setColor(0f/255, 0f/255, 153f/255, 1);
 		for (int i = 0; i < atomsHandler.getAtoms().size(); i++) {
 			shapeRenderer.circle(atomsHandler.getAtoms().get(i).movement.getPosition().x, 
