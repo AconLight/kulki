@@ -7,18 +7,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.redartedgames.kulki.atoms.Atom;
 import com.redartedgames.kulki.atoms.AtomTriangle;
-/*
+
 import io.github.jdiemke.triangulation.DelaunayTriangulator;
 import io.github.jdiemke.triangulation.NotEnoughPointsException;
 import io.github.jdiemke.triangulation.Triangle2D;
 import io.github.jdiemke.triangulation.Vector2D;
-*/
+
 public class Trianglation {
 	boolean flaga = false;
 	private ArrayList<Atom> atoms;
 	
 	private float maxL = 70;
-	//public DelaunayTriangulator delaunayTriangulator;
+	public DelaunayTriangulator delaunayTriangulator;
 	
 	private ArrayList<AtomTriangle> atomTriangles;
 	
@@ -38,7 +38,6 @@ public class Trianglation {
 	}
 	
 	public void calculate() {
-		/*
 		ArrayList<AtomTriangle> atomTriangles = new ArrayList<AtomTriangle>();
 		//TODO
 		
@@ -91,7 +90,7 @@ public class Trianglation {
 	    delaunayTriangulator.getTriangles().removeAll(trianglesToRem);
 		
 		this.atomTriangles = atomTriangles;
-		*/
+		
 	}
 	
 	void trian(ArrayList<AtomTriangle> atomtriangles, ArrayList<Atom> atoms, Atom atom1, Atom atom2, Atom atom3, Atom atom) {
