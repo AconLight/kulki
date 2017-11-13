@@ -1,4 +1,0 @@
-rootProject.name = 'Delaunay Triangulator'
-
-include 'example'
-include 'library'
