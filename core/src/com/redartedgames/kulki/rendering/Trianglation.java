@@ -17,7 +17,7 @@ public class Trianglation {
 	boolean flaga = false;
 	private ArrayList<Atom> atoms;
 	
-	private float maxL = 70;
+	private float maxL = 100;
 	public DelaunayTriangulator delaunayTriangulator;
 	
 	private ArrayList<AtomTriangle> atomTriangles;

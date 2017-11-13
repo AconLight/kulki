@@ -99,6 +99,7 @@ public class Atom extends GameObject{
 			return false;
 		}
 		
+		
 		public void eject(AtomsHandler atomsHandler) {
 			atomsHandler.addAtom(movement.getPosition().x + creationA*5, movement.getPosition().y + creationB*5,
 					movement.getVelocity().x + creationA*500, movement.getVelocity().y+creationB*500, k, a, b, h);

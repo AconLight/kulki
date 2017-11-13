@@ -5,30 +5,73 @@ import java.util.ArrayList;
 public class NeuralCell {
 	
 	private ArrayList<NeuralCell> prevs;
-	private ArrayList<NeuralCell> nexts;
+	public ArrayList<NeuralCell> nexts;
 	
 	private int prevsI;
 	
-	private float weigtht;
-	private float value;
+	public float weight, tryWeight;
+	private float value, bias;
 	
 	private NeuralFunction function;
 	
-	public NeuralCell(ArrayList<NeuralCell> prevs, ArrayList<NeuralCell> nexts, float weight, NeuralFunction function) {
+	public NeuralCell(float weight, float bias, NeuralFunction function) {
 		prevsI = 0;
-		this.prevs = prevs;
-		this.nexts = nexts;
-		this.weigtht = weight;
+		this.prevs = new ArrayList<NeuralCell>();
+		this.nexts = new ArrayList<NeuralCell>();
+		this.weight = weight;
+		tryWeight = weight;
 		value = 0;
 		this.function = function;
 	}
 	
-	public void signal(float value) {
+	public float getValue( ) {
+		return value;
+	}
+	
+	public void addPrev(NeuralCell prev) {
+		this.prevs.add(prev);
+	}
+	
+	public void addNext(NeuralCell next) {
+		this.nexts.add(next);
+	}
+	
+	public void addPrevs(ArrayList<NeuralCell> prevs) {
+		this.prevs.addAll(prevs);
+	}
+	
+	public void addNexts(ArrayList<NeuralCell> nexts) {
+		this.nexts.addAll(nexts);
+	}
+	
+	public void trySignal(float value) {
 		prevsI++;
-		this.value += value*weigtht;
+		//System.out.println("sig, " + nexts.size() + ", " + prevsI + " / " + prevs.size());
+		
+		this.value += value*tryWeight;
 		if (prevsI >= prevs.size()) {
 			for(NeuralCell cell : nexts) {
-				cell.signal(this.value);
+				cell.trySignal(function.function(this.value));
+			}
+			if (nexts.size() == 0) {
+				//System.out.println("last");
+				this.value = function.function(this.value);
+			}
+		}
+	}
+	
+	public void signal(float value) {
+		prevsI++;
+		//System.out.println("sig, " + nexts.size() + ", " + prevsI + " / " + prevs.size());
+		
+		this.value += value*weight;
+		if (prevsI >= prevs.size()) {
+			for(NeuralCell cell : nexts) {
+				cell.signal(function.function(this.value));
+			}
+			if (nexts.size() == 0) {
+				//System.out.println("last");
+				this.value = function.function(this.value);
 			}
 		}
 	}
